@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f4f4f4;
+        }
+        .dashboard-container {
+            text-align: center;
+        }
+        h1 {
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+        button {
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+
+<div class="dashboard-container">
+    <h1>Welcome, <span id="user-name"></span></h1>
+    <button id="logout-btn">Logout</button>
+</div>
+
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-app.js";
+    import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-auth.js";
+
+    // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+const firebaseConfig = {
+  apiKey: "AIzaSyARDLbyGKcZR3-dc-2hsYwArPnWspMmJ3Q",
+  authDomain: "gcpclass2-611d3.firebaseapp.com",
+  projectId: "gcpclass2-611d3",
+  storageBucket: "gcpclass2-611d3.appspot.com",
+  messagingSenderId: "298572994318",
+  appId: "1:298572994318:web:a634ed147e8c9e1c90a95f",
+  measurementId: "G-9S3WCTPKPD"
+};
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+
+    onAuthStateChanged(auth, (user) => {
+        if (user) {
+            document.getElementById('user-name').textContent = user.email;
+        } else {
+            window.location.href = 'login.html'; // Redirect to login if not authenticated
+        }
+    });
+
+    document.getElementById('logout-btn').addEventListener('click', async () => {
+        try {
+            await signOut(auth);
+            window.location.href = 'login.html'; // Redirect to login after logout
+        } catch (error) {
+            console.error('Error during logout:', error);
+        }
+    });
+</script>
+
+</body>
+</html>
